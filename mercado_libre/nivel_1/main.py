@@ -12,67 +12,16 @@
 
 import random
 import numpy as np
-
-def random_dna():
-    base = ['A','T','C','G']
-    dna = []
-    for _ in range(6):
-        lista = []
-        for _ in range(6): 
-            lista.append(random.choice(base))
-        dna.append(lista)
-    return np.array(dna) # matriz
+import generador_dna
+import mutant
             
 
-
-def is_mutant(dna):
-    # diagonales 
-    d_inferior_2 = dna.diagonal(-2)
-    d_inferior_1 =  dna.diagonal(-1)
-    d_ppal = dna.diagonal()
-    d_1 = dna.diagonal(1)
-    d_2 = dna.diagonal(2)
-    
-    # diagonales invertidas
-    d_inferior_rev_2 = np.fliplr(dna).diagonal(-2)
-    d_inferior_rev_1 = np.fliplr(dna).diagonal(-1)
-    d_ppal_rev = np.fliplr(dna).diagonal()
-    d_rev_1 = np.fliplr(dna).diagonal(1)
-    d_rev_2 = np.fliplr(dna).diagonal(-2)
-
-    d_2_list = [d_inferior_2, d_2, d_inferior_rev_2, d_rev_2]
-    d_1_list = [d_inferior_1, d_1, d_inferior_rev_1, d_rev_1]
-    d_ppal_list = [d_ppal, d_ppal_rev]
-
-    # diagonales 2
-    for i in d_2_list:
-        if len(set(i)) == 1:
-            return True
-    #diagonales 1
-    for i in d_1_list:
-        if len(set(i[0:4])) == 1 or len(set(i[1:5])) == 1: 
-            return True
-    #diagonales ppales
-    for i in d_ppal_list:
-        if len(set(i[0:4])) == 1 or len(set(i[1:5])) == 1 or len(set(i[2:6])) == 1: 
-            return True
-    #filas
-    for i in dna:
-        if len(set(i[0:4])) == 1 or len(set(i[1:5])) == 1 or len(set(i[2:6])) == 1: 
-            return True
-    #columnas
-    for i in range(len(dna[1,:])):
-        if len(set((dna[:, i])[0:4])) == 1 or len(set((dna[:, i])[1:5])) == 1 or len(set((dna[:, i])[2:6])) == 1:
-            return True
- 
-
-    return False
-
 if __name__ == '__main__':
-    dna = random_dna()
+    dna = generador_dna.random_dna(6)
     print(dna , '\n')
+    print(mutant.is_mutant(dna))
 
-    if (is_mutant(dna)) == True: 
-        print('ES MUTANTE')
-    else:
-        print('NO ES MUTANTE')
+    #if (mutant.is_mutant(dna)) == True: 
+     #   print('ES MUTANTE')
+    #else:
+     #   print('NO ES MUTANTE')
